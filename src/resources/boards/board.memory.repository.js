@@ -3,7 +3,7 @@ const {
   getBoardById,
   createBoard,
   updateBoard,
-  deleteBoard
+  removeBoard
 } = require('../../common/inMemoryDb');
 
 const getAll = async () => await getAllBoards();
@@ -29,12 +29,12 @@ const update = async (id, board) => {
   return await getById(id);
 };
 
-const del = async id => {
-  const board = await deleteBoard(id);
+const remove = async id => {
+  const board = await removeBoard(id);
   if (!board[0]) {
     throw new Error(`Board with id: ${id} was not found`);
   }
   return board[0];
 };
 
-module.exports = { getAll, getById, create, update, del };
+module.exports = { getAll, getById, create, update, remove };

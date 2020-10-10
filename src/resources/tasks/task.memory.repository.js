@@ -3,7 +3,7 @@ const {
   getTaskById,
   createTask,
   updateTaskInBoard,
-  deleteTask
+  removeTask
 } = require('../../common/inMemoryDb');
 
 const getAll = async boardId => {
@@ -36,8 +36,8 @@ const update = async (boardId, id, task) => {
   return await getById(id);
 };
 
-const del = async (boardId, id) => {
-  const task = await deleteTask(boardId, id);
+const remove = async (boardId, id) => {
+  const task = await removeTask(boardId, id);
   if (!task[0]) {
     throw new Error(
       `Task with id: ${id} in board id: ${boardId} was not found`
@@ -46,4 +46,4 @@ const del = async (boardId, id) => {
   return task[0];
 };
 
-module.exports = { getAll, getById, create, update, del };
+module.exports = { getAll, getById, create, update, remove };

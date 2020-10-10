@@ -43,7 +43,7 @@ router.route('/:id').put(async (req, res) => {
 });
 
 router.route('/:id').delete(async (req, res) => {
-  const task = await taskService.del(req.params.boardId, req.params.id);
+  const task = await taskService.remove(req.params.boardId, req.params.id);
   res.json(task);
 });
 

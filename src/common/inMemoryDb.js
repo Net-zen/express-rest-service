@@ -1,16 +1,16 @@
-const User = require('../resources/users/user.model');
-const Board = require('../resources/boards/board.model');
-const Task = require('../resources/tasks/task.model');
+// const User = require('../resources/users/user.model');
+// const Board = require('../resources/boards/board.model');
+// const Task = require('../resources/tasks/task.model');
 
 const DB = {
   users: [],
   boards: [],
   tasks: []
 };
-
-DB.users.push(new User(), new User(), new User());
-DB.boards.push(new Board(), new Board(), new Board());
-DB.tasks.push(new Task(), new Task(), new Task());
+//
+// DB.users.push(new User(), new User(), new User());
+// DB.boards.push(new Board(), new Board(), new Board());
+// DB.tasks.push(new Task(), new Task(), new Task());
 
 const getAllUsers = async () => JSON.parse(JSON.stringify(DB.users));
 
@@ -32,7 +32,7 @@ const updateUser = async (id, user) => {
   }
 };
 
-const deleteUser = async id => {
+const removeUser = async id => {
   const idx = DB.users.findIndex(el => el.id === id);
   if (idx <= -1) {
     throw new Error(`User with id: ${id} was not found`);
@@ -67,13 +67,13 @@ const updateBoard = async (id, board) => {
   }
 };
 
-const deleteBoard = async id => {
+const removeBoard = async id => {
   const idx = DB.boards.findIndex(el => el.id === id);
   if (idx <= -1) {
     throw new Error(`Board with id: ${id} was not found`);
   } else {
     const boardTasks = getAllTasksByBoard(id);
-    boardTasks && (await boardTasks).forEach(task => deleteTask(id, task.id));
+    boardTasks && (await boardTasks).forEach(task => removeTask(id, task.id));
     return DB.boards.splice(idx, 1);
   }
 };
@@ -105,7 +105,7 @@ const updateTaskInBoard = async (boardId, id, task) => {
   }
 };
 
-const deleteTask = async (boardId, id) => {
+const removeTask = async (boardId, id) => {
   const idx = DB.tasks.findIndex(
     task => task.boardId === boardId && task.id === id
   );
@@ -123,15 +123,15 @@ module.exports = {
   getUserById,
   createUser,
   updateUser,
-  deleteUser,
+  removeUser,
   getAllBoards,
   getBoardById,
   createBoard,
   updateBoard,
-  deleteBoard,
+  removeBoard,
   getAllTasksByBoard,
   getTaskById,
   createTask,
   updateTaskInBoard,
-  deleteTask
+  removeTask
 };

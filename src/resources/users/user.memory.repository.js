@@ -3,7 +3,7 @@ const {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  removeUser
 } = require('../../common/inMemoryDb');
 
 const getAll = async () => await getAllUsers();
@@ -29,12 +29,12 @@ const update = async (id, user) => {
   return await getById(id);
 };
 
-const del = async id => {
-  const user = await deleteUser(id);
+const remove = async id => {
+  const user = await removeUser(id);
   if (!user[0]) {
     throw new Error(`User with id: ${id} was not found`);
   }
   return user[0];
 };
 
-module.exports = { getAll, getById, create, update, del };
+module.exports = { getAll, getById, create, update, remove };

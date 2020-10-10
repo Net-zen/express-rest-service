@@ -8,6 +8,6 @@ const create = async board => await boardRepo.create(board);
 
 const update = async (id, board) => await boardRepo.update(id, board);
 
-const del = async id => await boardRepo.del(id);
+const remove = async id => await boardRepo.remove(id);
 
-module.exports = { getAll, getById, create, update, del };
+module.exports = { getAll, getById, create, update, remove };

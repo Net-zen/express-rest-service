@@ -8,6 +8,6 @@ const create = async user => await usersRepo.create(user);
 
 const update = async (id, user) => await usersRepo.update(id, user);
 
-const del = async id => await usersRepo.del(id);
+const remove = async id => await usersRepo.remove(id);
 
-module.exports = { getAll, getById, create, update, del };
+module.exports = { getAll, getById, create, update, remove };
