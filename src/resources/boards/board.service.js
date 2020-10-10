@@ -6,8 +6,8 @@ const getById = async id => await boardRepo.getById(id);
 
 const create = async board => await boardRepo.create(board);
 
-const put = async (id, board) => await boardRepo.put(id, board);
+const update = async (id, board) => await boardRepo.update(id, board);
 
 const del = async id => await boardRepo.del(id);
 
-module.exports = { getAll, getById, create, put, del };
+module.exports = { getAll, getById, create, update, del };

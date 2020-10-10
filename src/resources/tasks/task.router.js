@@ -31,7 +31,7 @@ router.route('/').post(async (req, res) => {
 
 router.route('/:id').put(async (req, res) => {
   try {
-    const task = await taskService.put(
+    const task = await taskService.update(
       req.params.boardId,
       req.params.id,
       req.body

@@ -2,7 +2,7 @@ const {
   getAllUsers,
   getUserById,
   createUser,
-  putUser,
+  updateUser,
   deleteUser
 } = require('../../common/inMemoryDb');
 
@@ -24,8 +24,8 @@ const create = async user => {
   return newUser[0];
 };
 
-const put = async (id, user) => {
-  await putUser(id, user);
+const update = async (id, user) => {
+  await updateUser(id, user);
   return await getById(id);
 };
 
@@ -37,4 +37,4 @@ const del = async id => {
   return user[0];
 };
 
-module.exports = { getAll, getById, create, put, del };
+module.exports = { getAll, getById, create, update, del };

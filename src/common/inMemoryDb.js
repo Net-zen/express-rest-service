@@ -21,7 +21,7 @@ const createUser = async user => {
   return await getUserById(user.id);
 };
 
-const putUser = async (id, user) => {
+const updateUser = async (id, user) => {
   const idx = DB.users.findIndex(el => el.id === id);
   if (idx <= -1) {
     throw new Error(`User with id: ${id} was not found`);
@@ -56,7 +56,7 @@ const createBoard = async board => {
   return await getBoardById(board.id);
 };
 
-const putBoard = async (id, board) => {
+const updateBoard = async (id, board) => {
   const idx = DB.boards.findIndex(el => el.id === id);
   if (idx <= -1) {
     throw new Error(`Board with id: ${id} was not found`);
@@ -88,7 +88,7 @@ const createTask = async task => {
   return await getTaskById(task.id);
 };
 
-const putTaskInBoard = async (boardId, id, task) => {
+const updateTaskInBoard = async (boardId, id, task) => {
   const tasks = DB.tasks.filter(el => el.boardId === boardId);
   const idx = tasks.findIndex(el => el.id === id);
   if (idx <= -1) {
@@ -122,16 +122,16 @@ module.exports = {
   getAllUsers,
   getUserById,
   createUser,
-  putUser,
+  updateUser,
   deleteUser,
   getAllBoards,
   getBoardById,
   createBoard,
-  putBoard,
+  updateBoard,
   deleteBoard,
   getAllTasksByBoard,
   getTaskById,
   createTask,
-  putTaskInBoard,
+  updateTaskInBoard,
   deleteTask
 };
