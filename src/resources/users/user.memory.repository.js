@@ -1,6 +1,40 @@
-const getAll = async () => {
-  // TODO: mock implementation. should be replaced during task development
-  return [];
+const {
+  getAllUsers,
+  getUserById,
+  createUser,
+  putUser,
+  deleteUser
+} = require('../../common/inMemoryDb');
+
+const getAll = async () => getAllUsers();
+
+const getById = async id => {
+  const user = await getUserById(id);
+
+  if (!user[0]) {
+    throw new Error(`User with id: ${id} was not found`);
+  } else if (user.length > 1) {
+    throw new Error('Database is corrupted!');
+  }
+  return user[0];
 };
 
-module.exports = { getAll };
+const create = async user => {
+  const newUser = await createUser(user);
+  return newUser[0];
+};
+
+const put = async (id, user) => {
+  await putUser(id, user);
+  return await getById(id);
+};
+
+const del = async id => {
+  const user = await deleteUser(id);
+  if (!user[0]) {
+    throw new Error(`User with id: ${id} was not found`);
+  }
+  return user[0];
+};
+
+module.exports = { getAll, getById, create, put, del };
