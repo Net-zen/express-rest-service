@@ -1,6 +1,6 @@
 const usersRepo = require('./user.memory.repository');
 
-const getAll = () => usersRepo.getAll();
+const getAll = async () => await usersRepo.getAll();
 
 const getById = async id => await usersRepo.getById(id);
 

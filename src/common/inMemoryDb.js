@@ -1,10 +1,13 @@
 const User = require('../resources/users/user.model');
+const Board = require('../resources/boards/board.model');
 
 const DB = {
-  users: []
+  users: [],
+  boards: []
 };
 
 DB.users.push(new User(), new User(), new User());
+DB.boards.push(new Board(), new Board(), new Board());
 
 const getAllUsers = async () => JSON.parse(JSON.stringify(DB.users));
 
@@ -35,14 +38,44 @@ const deleteUser = async id => {
   }
 };
 
-// const putUser = async (id, user) => {
-//   try {
-//     const dbUser = getUserById(id);
-//     dbUser.name = user.name;
-//     dbUser.login = user.login;
-//     dbUser.password = user.password;
-//   }
-//
-// };
+const getAllBoards = async () => JSON.parse(JSON.stringify(DB.boards));
 
-module.exports = { getAllUsers, getUserById, createUser, putUser, deleteUser };
+const getBoardById = async id => DB.boards.filter(board => board.id === id);
+
+const createBoard = async board => {
+  DB.boards.push(board);
+  return await getBoardById(board.id);
+};
+
+const putBoard = async (id, board) => {
+  const idx = DB.boards.findIndex(el => el.id === id);
+  if (idx <= -1) {
+    throw new Error(`Board with id: ${id} was not found`);
+  } else {
+    DB.boards[idx].title = board.title;
+    DB.boards[idx].columns[0].title = board.columns[0].title;
+    DB.boards[idx].columns[0].order = board.columns[0].order;
+  }
+};
+
+const deleteBoard = async id => {
+  const idx = DB.boards.findIndex(el => el.id === id);
+  if (idx <= -1) {
+    throw new Error(`Board with id: ${id} was not found`);
+  } else {
+    return DB.boards.splice(idx, 1);
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  putUser,
+  deleteUser,
+  getAllBoards,
+  getBoardById,
+  createBoard,
+  putBoard,
+  deleteBoard
+};

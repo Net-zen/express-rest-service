@@ -6,7 +6,7 @@ const {
   deleteUser
 } = require('../../common/inMemoryDb');
 
-const getAll = async () => getAllUsers();
+const getAll = async () => await getAllUsers();
 
 const getById = async id => {
   const user = await getUserById(id);
