@@ -1,13 +1,16 @@
 const User = require('../resources/users/user.model');
 const Board = require('../resources/boards/board.model');
+const Task = require('../resources/tasks/task.model');
 
 const DB = {
   users: [],
-  boards: []
+  boards: [],
+  tasks: []
 };
 
 DB.users.push(new User(), new User(), new User());
 DB.boards.push(new Board(), new Board(), new Board());
+DB.tasks.push(new Task(), new Task(), new Task());
 
 const getAllUsers = async () => JSON.parse(JSON.stringify(DB.users));
 
@@ -67,6 +70,46 @@ const deleteBoard = async id => {
   }
 };
 
+const getAllTasksByBoard = async boardId =>
+  DB.tasks.filter(task => task.boardId === boardId);
+
+const getTaskById = async id => DB.tasks.filter(task => task.id === id);
+
+const createTask = async task => {
+  DB.tasks.push(task);
+  return await getTaskById(task.id);
+};
+
+const putTaskInBoard = async (boardId, id, task) => {
+  const tasks = DB.tasks.filter(el => el.boardId === boardId);
+  const idx = tasks.findIndex(el => el.id === id);
+  if (idx <= -1) {
+    throw new Error(
+      `Task with id: ${id} in board id: ${boardId} was not found`
+    );
+  } else {
+    tasks[idx].title = task.title;
+    tasks[idx].order = task.order;
+    tasks[idx].description = task.description;
+    tasks[idx].userId = task.userId;
+    tasks[idx].boardId = task.boardId;
+    tasks[idx].columnId = task.columnId;
+  }
+};
+
+const deleteTask = async (boardId, id) => {
+  const idx = DB.tasks.findIndex(
+    task => task.boardId === boardId && task.id === id
+  );
+  if (idx <= -1) {
+    throw new Error(
+      `Task with id: ${id} in board id: ${boardId} was not found`
+    );
+  } else {
+    return DB.tasks.splice(idx, 1);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -77,5 +120,10 @@ module.exports = {
   getBoardById,
   createBoard,
   putBoard,
-  deleteBoard
+  deleteBoard,
+  getAllTasksByBoard,
+  getTaskById,
+  createTask,
+  putTaskInBoard,
+  deleteTask
 };

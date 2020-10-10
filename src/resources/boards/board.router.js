@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const boardService = require('./board.service');
+const taskRouter = require('../tasks/task.router');
 const Board = require('./board.model');
+
+router.use('/:boardId/tasks', taskRouter);
 
 router.route('/').get(async (req, res) => {
   res.json(await boardService.getAll());
