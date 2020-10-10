@@ -25,6 +25,10 @@ router.route('/').post(async (req, res) => {
         {
           title: req.body.columns[0].title,
           order: req.body.columns[0].order
+        },
+        {
+          title: req.body.columns[1].title,
+          order: req.body.columns[1].order
         }
       ]
     })

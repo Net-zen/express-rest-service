@@ -37,6 +37,12 @@ const deleteUser = async id => {
   if (idx <= -1) {
     throw new Error(`User with id: ${id} was not found`);
   } else {
+    DB.tasks = DB.tasks.map(task => {
+      if (task.userId === id) {
+        task.userId = null;
+      }
+      return task;
+    });
     return DB.users.splice(idx, 1);
   }
 };
@@ -66,6 +72,8 @@ const deleteBoard = async id => {
   if (idx <= -1) {
     throw new Error(`Board with id: ${id} was not found`);
   } else {
+    const boardTasks = getAllTasksByBoard(id);
+    boardTasks && (await boardTasks).forEach(task => deleteTask(id, task.id));
     return DB.boards.splice(idx, 1);
   }
 };
