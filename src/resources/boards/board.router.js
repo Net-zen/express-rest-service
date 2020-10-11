@@ -1,9 +1,6 @@
 const router = require('express').Router();
 const boardService = require('./board.service');
-const taskRouter = require('../tasks/task.router');
 const Board = require('./board.model');
-
-router.use('/:boardId/tasks', taskRouter);
 
 router.route('/').get(async (req, res) => {
   res.json(await boardService.getAll());
@@ -18,21 +15,7 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const board = await boardService.create(
-    new Board({
-      title: req.body.title,
-      columns: [
-        {
-          title: req.body.columns[0].title,
-          order: req.body.columns[0].order
-        },
-        {
-          title: req.body.columns[1].title,
-          order: req.body.columns[1].order
-        }
-      ]
-    })
-  );
+  const board = await boardService.create(new Board({ ...req.body }));
   res.json(board);
 });
 

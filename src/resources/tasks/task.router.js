@@ -16,15 +16,7 @@ router.route('/:id').get(async (req, res) => {
 
 router.route('/').post(async (req, res) => {
   const task = await taskService.create(
-    new Task({
-      id: req.body.id,
-      title: req.body.title,
-      order: req.body.order,
-      description: req.body.description,
-      userId: req.body.userId,
-      boardId: req.params.boardId,
-      columnId: req.body.columnId
-    })
+    new Task({ ...req.body, boardId: req.params.boardId })
   );
   res.json(task);
 });
