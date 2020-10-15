@@ -17,33 +17,32 @@ const getAll = async boardId => {
 
 const getById = async id => {
   const task = await getTaskById(id);
-
-  if (!task[0]) {
+  if (!task) {
     throw new Error(`Task with id: ${id} was not found`);
-  } else if (task.length > 1) {
-    throw new Error('Database is corrupted!');
   }
-  return task[0];
+  return task;
 };
 
-const create = async task => {
-  const newTask = await createTask(task);
-  return newTask[0];
-};
+const create = task => createTask(task);
 
 const update = async (boardId, id, task) => {
-  await updateTaskInBoard(boardId, id, task);
-  return await getById(id);
-};
-
-const remove = async (boardId, id) => {
-  const task = await removeTask(boardId, id);
-  if (!task[0]) {
+  const updatedTask = await updateTaskInBoard(boardId, id, task);
+  if (!updatedTask) {
     throw new Error(
       `Task with id: ${id} in board id: ${boardId} was not found`
     );
   }
-  return task[0];
+  return updatedTask;
+};
+
+const remove = async (boardId, id) => {
+  const task = await removeTask(boardId, id);
+  if (!task) {
+    throw new Error(
+      `Task with id: ${id} in board id: ${boardId} was not found`
+    );
+  }
+  return true;
 };
 
 module.exports = { getAll, getById, create, update, remove };

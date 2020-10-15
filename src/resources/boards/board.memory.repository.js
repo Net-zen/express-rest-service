@@ -6,35 +6,32 @@ const {
   removeBoard
 } = require('../../common/inMemoryDb');
 
-const getAll = async () => await getAllBoards();
+const getAll = () => getAllBoards();
 
 const getById = async id => {
   const board = await getBoardById(id);
-
-  if (!board[0]) {
-    throw new Error(`Task with id: ${id} was not found`);
-  } else if (board.length > 1) {
-    throw new Error('Database is corrupted!');
+  if (!board) {
+    throw new Error(`Board with id: ${id} was not found`);
   }
-  return board[0];
+  return board;
 };
 
-const create = async board => {
-  const newBoard = await createBoard(board);
-  return newBoard[0];
-};
+const create = board => createBoard(board);
 
 const update = async (id, board) => {
-  await updateBoard(id, board);
-  return await getById(id);
+  const updatedBoard = await updateBoard(id, board);
+  if (!updatedBoard) {
+    throw new Error(`Board with id: ${id} was not found`);
+  }
+  return updatedBoard;
 };
 
 const remove = async id => {
   const board = await removeBoard(id);
-  if (!board[0]) {
+  if (!board) {
     throw new Error(`Board with id: ${id} was not found`);
   }
-  return board[0];
+  return board;
 };
 
 module.exports = { getAll, getById, create, update, remove };

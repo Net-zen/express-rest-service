@@ -10,31 +10,28 @@ const getAll = async () => await getAllUsers();
 
 const getById = async id => {
   const user = await getUserById(id);
-
-  if (!user[0]) {
+  if (!user) {
     throw new Error(`User with id: ${id} was not found`);
-  } else if (user.length > 1) {
-    throw new Error('Database is corrupted!');
   }
-  return user[0];
+  return user;
 };
 
-const create = async user => {
-  const newUser = await createUser(user);
-  return newUser[0];
-};
+const create = user => createUser(user);
 
 const update = async (id, user) => {
-  await updateUser(id, user);
-  return await getById(id);
+  const updatedUser = await updateUser(id, user);
+  if (!updatedUser) {
+    throw new Error(`User with id: ${id} was not found`);
+  }
+  return updatedUser;
 };
 
 const remove = async id => {
   const user = await removeUser(id);
-  if (!user[0]) {
+  if (!user) {
     throw new Error(`User with id: ${id} was not found`);
   }
-  return user[0];
+  return true;
 };
 
 module.exports = { getAll, getById, create, update, remove };
