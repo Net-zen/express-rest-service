@@ -1,4 +1,4 @@
-const logger = require('./winston-cfg');
+const { logger } = require('./winston-cfg');
 
 const wrapper = callback => async (req, res, next) => {
   try {

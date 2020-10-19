@@ -18,15 +18,13 @@ app.use(logWriter);
 process.on('uncaughtException', error => {
   logger.error(`error.message = ${JSON.stringify(error.message)}:`);
   logger.info('Process terminated');
-  const { pid } = process;
-  logger.on('finish', () => process.kill(pid));
+  logger.exit(process.pid);
 });
 
 process.on('unhandledRejection', reason => {
   logger.error(`error.message = ${JSON.stringify(reason.message)}`);
   logger.info('Process terminated');
-  const { pid } = process;
-  logger.on('finish', () => process.kill(pid));
+  logger.exit(process.pid);
 });
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -46,6 +44,10 @@ app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use(errorHandler);
+
+// setTimeout(() => {
+//   throw new Error('Oooooops!');
+// }, 2000);
 
 // throw Error('Oops');
 

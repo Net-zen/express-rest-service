@@ -1,33 +1,13 @@
 const winston = require('winston');
 require('winston-daily-rotate-file');
 
-const infoTransport = options =>
-  new winston.transports.DailyRotateFile({
-    ...options,
-    level: 'info',
-    filename: `${__dirname}/../logs/rest-service-info-%DATE%.log`
-  });
-
-const errorTransport = options =>
-  new winston.transports.DailyRotateFile({
-    ...options,
-    level: 'error',
-    filename: `${__dirname}/../logs/rest-service-ERRORS-%DATE%.log`
-  });
-
-const timestampFormat = () =>
-  new Date().toLocaleString('ru-RU', {
-    timeZone: 'Asia/Omsk',
-    hour12: false
-  });
-
 const options = {
   file: {
     handleExceptions: false,
     json: true,
     datePattern: 'DD-MM-YYYY',
     zippedArchive: true,
-    maxSize: '20m',
+    maxSize: '5m',
     maxFiles: '7d'
   },
   console: {
@@ -38,11 +18,29 @@ const options = {
   }
 };
 
+const infoTransport = new winston.transports.DailyRotateFile({
+  ...options.file,
+  level: 'info',
+  filename: `${__dirname}/../logs/rest-service-info-%DATE%.log`
+});
+
+const errorTransport = new winston.transports.DailyRotateFile({
+  ...options.file,
+  level: 'error',
+  filename: `${__dirname}/../logs/rest-service-ERRORS-%DATE%.log`
+});
+
+const timestampFormat = () =>
+  new Date().toLocaleString('ru-RU', {
+    timeZone: 'Asia/Omsk',
+    hour12: false
+  });
+
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(options.console),
-    infoTransport(options.file),
-    errorTransport(options.file)
+    infoTransport,
+    errorTransport
   ],
   format: winston.format.combine(
     winston.format.combine(),
@@ -56,12 +54,23 @@ const logger = winston.createLogger({
   exitOnError: false
 });
 
+logger.exit = pid => {
+  infoTransport.on('finish', () => process.kill(pid));
+  infoTransport.close();
+};
+
 const logWriter = (req, res, next) => {
   const { protocol, ip, body, url, query, method } = req;
-  const { statusCode } = res;
-  logger.info(`${ip} : ${statusCode} : ${method} : ${url} : ${protocol}
+  const timeStart = Date.now();
+  res.on('finish', () => {
+    const delay = Date.now() - timeStart;
+    logger.info(`${ip} : ${
+      res.statusCode
+    } : ${delay}ms : ${method} : ${url} : ${protocol}
 query = ${JSON.stringify(query)}
-body = ${JSON.stringify(body)}`);
+body = ${JSON.stringify(body)}
+`);
+  });
   next();
 };
 
