@@ -23,16 +23,16 @@ const timestampFormat = () =>
 
 const options = {
   file: {
-    handleExceptions: true,
+    handleExceptions: false,
     json: true,
     datePattern: 'DD-MM-YYYY',
     zippedArchive: true,
     maxSize: '20m',
-    maxFiles: '30d'
+    maxFiles: '7d'
   },
   console: {
     level: 'debug',
-    handleExceptions: true,
+    handleExceptions: false,
     json: false,
     colorize: true
   }
@@ -56,10 +56,13 @@ const logger = winston.createLogger({
   exitOnError: false
 });
 
-logger.stream = {
-  write(message) {
-    logger.info(message);
-  }
+const logWriter = (req, res, next) => {
+  const { protocol, ip, body, url, query, method } = req;
+  const { statusCode } = res;
+  logger.info(`${ip} : ${statusCode} : ${method} : ${url} : ${protocol}
+query = ${JSON.stringify(query)}
+body = ${JSON.stringify(body)}`);
+  next();
 };
 
-module.exports = logger;
+module.exports = { logger, logWriter };
