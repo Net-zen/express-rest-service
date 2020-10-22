@@ -13,9 +13,7 @@ const errorHandler = (err, req, res, next) => {
     res.status(err.status).send(err.message);
   } else {
     logger.error(`error.status: 500 : error.massage: ${err.message}`);
-    res
-      .status(500)
-      .send(`Okay, Houston, we've had a problem here: ${err.message}`);
+    res.status(500).send("Okay, Houston, we've had a problem here.");
   }
   next();
 };
