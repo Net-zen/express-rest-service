@@ -7,24 +7,27 @@ const { taskSchema } = require('../../common/validationschemas');
 
 router.route('/').get(
   wrapper(async (req, res) => {
-    res.json(await taskService.getAll(req.params.boardId));
+    const tasks = await taskService.getAll(req.params.boardId);
+    res.json(tasks.map(Task.toResponse));
   })
 );
 
 router.route('/:id').get(
   validator.params(taskSchema.getTask),
   wrapper(async (req, res) => {
-    res.json(await taskService.getById(req.params.id));
+    const task = await taskService.getById(req.params.id);
+    res.json(Task.toResponse(task));
   })
 );
 
 router.route('/').post(
-  validator.body(taskSchema.createTask),
+  validator.params(taskSchema.createTask.params),
+  validator.body(taskSchema.createTask.body),
   wrapper(async (req, res) => {
     const task = await taskService.create(
       new Task({ ...req.body, boardId: req.params.boardId })
     );
-    res.json(task);
+    res.json(Task.toResponse(task));
   })
 );
 
@@ -37,7 +40,7 @@ router.route('/:id').put(
       req.params.id,
       req.body
     );
-    res.json(task);
+    res.json(Task.toResponse(task));
   })
 );
 

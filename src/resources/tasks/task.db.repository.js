@@ -1,14 +1,8 @@
-const {
-  getAllTasksByBoard,
-  getTaskById,
-  createTask,
-  updateTaskInBoard,
-  removeTask
-} = require('../../common/inMemoryDb');
+const Task = require('./task.model');
 const { NOT_FOUND } = require('../../common/errorHandler');
 
 const getAll = async boardId => {
-  const tasks = await getAllTasksByBoard(boardId);
+  const tasks = await Task.find({ boardId });
 
   if (!tasks[0]) {
     throw new NOT_FOUND(`Tasks with boardId: ${boardId} was not found`);
@@ -17,17 +11,17 @@ const getAll = async boardId => {
 };
 
 const getById = async id => {
-  const task = await getTaskById(id);
+  const task = await Task.findById(id);
   if (!task) {
     throw new NOT_FOUND(`Task with id: ${id} was not found`);
   }
   return task;
 };
 
-const create = task => createTask(task);
+const create = task => Task.create(task);
 
 const update = async (boardId, id, task) => {
-  const updatedTask = await updateTaskInBoard(boardId, id, task);
+  const updatedTask = await Task.findOneAndUpdate({ boardId, _id: id }, task);
   if (!updatedTask) {
     throw new NOT_FOUND(
       `Task with id: ${id} in board id: ${boardId} was not found`
@@ -37,7 +31,7 @@ const update = async (boardId, id, task) => {
 };
 
 const remove = async (boardId, id) => {
-  const task = await removeTask(boardId, id);
+  const task = await Task.findOneAndDelete({ boardId, _id: id });
   if (!task) {
     throw new NOT_FOUND(
       `Task with id: ${id} in board id: ${boardId} was not found`

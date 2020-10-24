@@ -57,32 +57,51 @@ const taskSchema = {
     id: uuid.required(),
     boardId: uuid.optional()
   }),
-  createTask: Joi.object({
-    title: Joi.string().required(),
-    order: Joi.number().required(),
-    description: Joi.string().required(),
-    userId: uuid.allow(null).optional(),
-    boardId: uuid.allow(null).optional(),
-    columnId: uuid.allow(null).optional()
-  }),
-  updateTask: {
+  createTask: {
     params: Joi.object({
-      id: uuid.required(),
-      boardId: uuid.optional()
+      boardId: uuid.required()
     }),
     body: Joi.object({
-      id: uuid.required(),
       title: Joi.string().required(),
       order: Joi.number().required(),
       description: Joi.string().required(),
-      userId: uuid.allow(null).required(),
-      boardId: uuid.allow(null).required(),
-      columnId: uuid.allow(null).required()
+      userId: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional(),
+      boardId: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional(),
+      columnId: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional()
+    })
+  },
+  updateTask: {
+    params: Joi.object({
+      id: uuid.required(),
+      boardId: uuid.required()
+    }),
+    body: Joi.object({
+      id: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional(),
+      title: Joi.string().required(),
+      order: Joi.number().required(),
+      description: Joi.string().required(),
+      userId: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional(),
+      boardId: Joi.alternatives()
+        .try(uuid, Joi.string(), null)
+        .optional(),
+      columnId: Joi.alternatives()
+        .try(uuid, Joi.number(), null)
+        .optional()
     })
   },
   deleteTask: Joi.object({
-    id: uuid.optional(),
-    boardId: uuid.optional()
+    id: uuid.required(),
+    boardId: uuid.required()
   })
 };
 

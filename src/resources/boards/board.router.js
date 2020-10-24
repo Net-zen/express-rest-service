@@ -7,14 +7,16 @@ const { boardSchema } = require('../../common/validationschemas');
 
 router.route('/').get(
   wrapper(async (req, res) => {
-    res.json(await boardService.getAll());
+    const boards = await boardService.getAll();
+    res.json(boards.map(Board.toResponse));
   })
 );
 
 router.route('/:id').get(
   validator.params(boardSchema.getBoard),
   wrapper(async (req, res) => {
-    res.json(await boardService.getById(req.params.id));
+    const board = await boardService.getById(req.params.id);
+    res.json(Board.toResponse(board));
   })
 );
 
@@ -22,7 +24,7 @@ router.route('/').post(
   validator.body(boardSchema.createBoard),
   wrapper(async (req, res) => {
     const board = await boardService.create(new Board({ ...req.body }));
-    res.json(board);
+    res.json(Board.toResponse(board));
   })
 );
 
@@ -31,7 +33,7 @@ router.route('/:id').put(
   validator.body(boardSchema.updateBoard.body),
   wrapper(async (req, res) => {
     const board = await boardService.update(req.params.id, req.body);
-    res.json(board);
+    res.json(Board.toResponse(board));
   })
 );
 

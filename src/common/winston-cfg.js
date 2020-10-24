@@ -60,9 +60,6 @@ logger.exit = pid => {
 };
 
 const logWriter = (req, res, next) => {
-  if (req.body.password) {
-    req.body.password = '******';
-  }
   const { protocol, ip, body, url, query, method } = req;
   const timeStart = Date.now();
   res.on('finish', () => {
