@@ -12,10 +12,6 @@ const boardSchema = new mongoose.Schema({
         order: 0
       }
     ]
-  },
-  _id: {
-    type: String,
-    default: uuid
   }
 });
 

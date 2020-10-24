@@ -1,12 +1,9 @@
 const Joi = require('joi');
-
-const uuid = Joi.string().regex(
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-);
+Joi.objectId = require('joi-objectid')(Joi);
 
 const userSchema = {
   getUser: Joi.object({
-    id: uuid.required()
+    id: Joi.objectId().required()
   }),
   createUser: Joi.object({
     name: Joi.string().required(),
@@ -15,23 +12,23 @@ const userSchema = {
   }),
   updateUser: {
     params: Joi.object({
-      id: uuid.required()
+      id: Joi.objectId().required()
     }),
     body: Joi.object({
       name: Joi.string().optional(),
       login: Joi.string().optional(),
       password: Joi.string().optional(),
-      id: uuid.optional()
+      id: Joi.objectId().optional()
     })
   },
   deleteUser: Joi.object({
-    id: uuid.required()
+    id: Joi.objectId().required()
   })
 };
 
 const boardSchema = {
   getBoard: Joi.object({
-    id: uuid.required()
+    id: Joi.objectId().required()
   }),
   createBoard: Joi.object({
     title: Joi.string().required(),
@@ -39,69 +36,69 @@ const boardSchema = {
   }),
   updateBoard: {
     params: Joi.object({
-      id: uuid.required()
+      id: Joi.objectId().required()
     }),
     body: Joi.object({
-      id: uuid.optional(),
+      id: Joi.objectId().optional(),
       title: Joi.string().optional(),
       columns: Joi.array().optional()
     })
   },
   deleteBoard: Joi.object({
-    id: uuid.required()
+    id: Joi.objectId().required()
   })
 };
 
 const taskSchema = {
   getTask: Joi.object({
-    id: uuid.required(),
-    boardId: uuid.optional()
+    id: Joi.objectId().required(),
+    boardId: Joi.objectId().optional()
   }),
   createTask: {
     params: Joi.object({
-      boardId: uuid.required()
+      boardId: Joi.objectId().required()
     }),
     body: Joi.object({
       title: Joi.string().required(),
       order: Joi.number().required(),
       description: Joi.string().required(),
       userId: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional(),
       boardId: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional(),
       columnId: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional()
     })
   },
   updateTask: {
     params: Joi.object({
-      id: uuid.required(),
-      boardId: uuid.required()
+      id: Joi.objectId().required(),
+      boardId: Joi.objectId().required()
     }),
     body: Joi.object({
       id: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional(),
       title: Joi.string().required(),
       order: Joi.number().required(),
       description: Joi.string().required(),
       userId: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional(),
       boardId: Joi.alternatives()
-        .try(uuid, Joi.string(), null)
+        .try(Joi.objectId(), Joi.string(), null)
         .optional(),
       columnId: Joi.alternatives()
-        .try(uuid, Joi.number(), null)
+        .try(Joi.objectId(), Joi.number(), null)
         .optional()
     })
   },
   deleteTask: Joi.object({
-    id: uuid.required(),
-    boardId: uuid.required()
+    id: Joi.objectId().required(),
+    boardId: Joi.objectId().required()
   })
 };
 

@@ -1,4 +1,3 @@
-const uuid = require('uuid');
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
@@ -16,10 +15,6 @@ const taskSchema = new mongoose.Schema({
   columnId: {
     type: String || null,
     default: null
-  },
-  _id: {
-    type: String,
-    default: uuid
   }
 });
 
