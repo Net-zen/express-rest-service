@@ -1,13 +1,5 @@
 const { logger } = require('./winston-cfg');
 
-const wrapper = callback => async (req, res, next) => {
-  try {
-    return await callback(req, res, next);
-  } catch (err) {
-    return next(err);
-  }
-};
-
 const errorHandler = (err, req, res, next) => {
   if (err instanceof NOT_FOUND) {
     res.status(err.status).send(err.message);
@@ -26,4 +18,4 @@ class NOT_FOUND extends Error {
   }
 }
 
-module.exports = { errorHandler, NOT_FOUND, wrapper };
+module.exports = { errorHandler, NOT_FOUND };
