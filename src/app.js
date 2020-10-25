@@ -5,7 +5,8 @@ const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
-const { logger, logWriter } = require('./common/winston-cfg');
+const morgan = require('morgan');
+const logger = require('./common/logger');
 const { errorHandler } = require('./common/errorHandler');
 
 const app = express();
@@ -13,19 +14,14 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
 
-app.use(logWriter);
-
-process.on('uncaughtException', error => {
-  logger.error(`error.message = ${JSON.stringify(error.message)}:`);
-  logger.info('Process terminated');
-  logger.exit(process.pid);
-});
-
-process.on('unhandledRejection', reason => {
-  logger.error(`error.message = ${JSON.stringify(reason.message)}`);
-  logger.info('Process terminated');
-  logger.exit(process.pid);
-});
+app.use(
+  morgan(
+    ':protocol :http-version :ip :method :status :url ' +
+      'query: :query ' +
+      'body: :body size :user-agent :res[content-length] - :response-time ms',
+    { stream: logger.stream }
+  )
+);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

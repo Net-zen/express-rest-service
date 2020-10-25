@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { MONGO_CONNECTION_STRING } = require('../common/config');
-const { logger } = require('../common/winston-cfg');
+const logger = require('../common/logger');
 
 const connectToDB = cb => {
   mongoose.connect(MONGO_CONNECTION_STRING, {

@@ -1,4 +1,4 @@
-const { logger } = require('./winston-cfg');
+const logger = require('./logger');
 
 const errorHandler = (err, req, res, next) => {
   if (err instanceof NOT_FOUND) {
