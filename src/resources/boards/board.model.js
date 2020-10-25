@@ -1,18 +1,9 @@
-const uuid = require('uuid');
 const mongoose = require('mongoose');
+const columnSchema = require('../columns/column.model');
 
 const boardSchema = new mongoose.Schema({
   title: String,
-  columns: {
-    type: [{}],
-    default: [
-      {
-        id: uuid,
-        title: 'Backlog',
-        order: 0
-      }
-    ]
-  }
+  columns: [columnSchema]
 });
 
 boardSchema.statics.toResponse = board => {
