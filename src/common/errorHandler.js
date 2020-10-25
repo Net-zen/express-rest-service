@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
   if (err instanceof NOT_FOUND) {
     res.status(err.status).send(err.message);
   } else {
-    logger.error(`error.status: 500 : error.massage: ${err.message}`);
+    logger.error(`error.status: 500 : error: ${err.stack || err.message}`);
     res.status(500).send("Okay, Houston, we've had a problem here.");
   }
   next();
