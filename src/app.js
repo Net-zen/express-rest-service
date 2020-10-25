@@ -8,10 +8,13 @@ const taskRouter = require('./resources/tasks/task.router');
 const morgan = require('morgan');
 const logger = require('./common/logger');
 const { errorHandler } = require('./common/errorHandler');
+const helmet = require('helmet');
+const cors = require('cors');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
-
+app.use(helmet());
+app.use(cors());
 app.use(express.json());
 
 app.use(
@@ -34,9 +37,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
-
 app.use('/boards', boardRouter);
-
 boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use(errorHandler);

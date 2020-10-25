@@ -54,11 +54,7 @@ const timestampFormat = () =>
   });
 
 const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(options.console),
-    infoTransport,
-    errorTransport
-  ],
+  transports: [infoTransport, errorTransport],
   format: winston.format.combine(
     winston.format.combine(),
     winston.format.timestamp({
@@ -70,6 +66,10 @@ const logger = winston.createLogger({
   ),
   exitOnError: true
 });
+
+if (process.env.NODE_ENV === 'development') {
+  logger.add(new winston.transports.Console(options.console));
+}
 
 logger.stream = {
   write(message) {

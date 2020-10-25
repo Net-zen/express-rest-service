@@ -10,10 +10,9 @@ const connectToDB = cb => {
   });
 
   const db = mongoose.connection;
-  db.on('error', () => logger.error('connection error:'));
+  db.on('error', error => logger.error(`connection error: ${error.message}`));
   db.once('open', () => {
-    console.log("we're connected!");
-    // db.dropDatabase();
+    logger.info("we're connected to DB!");
     cb();
   });
 };
