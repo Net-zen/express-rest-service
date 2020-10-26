@@ -11,6 +11,6 @@ boardSchema.statics.toResponse = board => {
   return { id, title, columns };
 };
 
-const Board = mongoose.model('Boards', boardSchema);
+const Board = mongoose.model('boards', boardSchema);
 
 module.exports = Board;

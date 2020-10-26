@@ -11,6 +11,6 @@ userSchema.statics.toResponse = user => {
   return { id, name, login };
 };
 
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model('users', userSchema);
 
 module.exports = User;

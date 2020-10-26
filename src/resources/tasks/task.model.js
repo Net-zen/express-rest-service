@@ -23,6 +23,6 @@ taskSchema.statics.toResponse = task => {
   return { id, title, order, description, userId, boardId, columnId };
 };
 
-const Task = mongoose.model('Tasks', taskSchema);
+const Task = mongoose.model('tasks', taskSchema);
 
 module.exports = Task;
