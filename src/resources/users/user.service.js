@@ -10,4 +10,6 @@ const update = (id, user) => usersRepo.update(id, user);
 
 const remove = id => usersRepo.remove(id);
 
-module.exports = { getAll, getById, create, update, remove };
+const getByLogin = user => usersRepo.getByLogin(user);
+
+module.exports = { getAll, getById, create, update, remove, getByLogin };

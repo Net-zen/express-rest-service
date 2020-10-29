@@ -31,4 +31,6 @@ const remove = async id => {
   return true;
 };
 
-module.exports = { getAll, getById, create, update, remove };
+const getByLogin = async user => User.findOne({ login: user.login });
+
+module.exports = { getAll, getById, create, update, remove, getByLogin };

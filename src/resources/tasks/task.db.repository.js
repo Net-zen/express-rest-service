@@ -21,7 +21,9 @@ const getById = async id => {
 const create = task => Task.create(task);
 
 const update = async (boardId, id, task) => {
-  const updatedTask = await Task.findOneAndUpdate({ boardId, _id: id }, task);
+  const updatedTask = await Task.findOneAndUpdate({ boardId, _id: id }, task, {
+    new: true
+  });
   if (!updatedTask) {
     throw new NOT_FOUND(
       `Task with id: ${id} in board id: ${boardId} was not found`
