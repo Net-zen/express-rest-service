@@ -1,6 +1,15 @@
 const { NOT_FOUND } = require('../../common/errorHandler');
 const User = require('./user.model');
 const Task = require('../tasks/task.model');
+const bcrypt = require('bcrypt');
+
+const createAdmin = async () => {
+  const salt = await bcrypt.genSalt(10);
+  User.create({
+    login: 'admin',
+    password: await bcrypt.hash('admin', salt)
+  });
+};
 
 const getAll = async () => User.find({});
 
@@ -33,4 +42,12 @@ const remove = async id => {
 
 const getByLogin = async user => User.findOne({ login: user.login });
 
-module.exports = { getAll, getById, create, update, remove, getByLogin };
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  getByLogin,
+  createAdmin
+};

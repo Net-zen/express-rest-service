@@ -14,7 +14,7 @@ const authenticateToken = async (req, res, next) => {
   if (!token) throw new UNAUTHORIZED('Failed to authenticate token');
 
   jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
-    if (err) throw new UNAUTHORIZED('Access denied');
+    if (err) throw new UNAUTHORIZED('Failed to authenticate token');
     req.user = user;
     next();
   });

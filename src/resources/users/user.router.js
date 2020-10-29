@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
 const User = require('./user.model');
 const usersService = require('./user.service');
 const validator = require('express-joi-validation').createValidator({});
@@ -28,7 +29,13 @@ router
     authenticateToken,
     validator.body(userSchema.createUser),
     async (req, res) => {
-      const user = await usersService.create(new User({ ...req.body }));
+      const salt = await bcrypt.genSalt(10);
+      const user = await usersService.create(
+        new User({
+          ...req.body,
+          password: await bcrypt.hash(req.body.password, salt)
+        })
+      );
       res.json(User.toResponse(user));
     }
   );
@@ -40,7 +47,11 @@ router
     validator.params(userSchema.updateUser.params),
     validator.body(userSchema.updateUser.body),
     async (req, res) => {
-      const user = await usersService.update(req.params.id, req.body);
+      const salt = await bcrypt.genSalt(10);
+      const user = await usersService.update(req.params.id, {
+        ...req.body,
+        password: await bcrypt.hash(req.body.password, salt)
+      });
       res.json(User.toResponse(user));
     }
   );
