@@ -39,19 +39,13 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
+
 app.use(authenticateToken);
+
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use(errorHandler);
-
-// setTimeout(() => {
-//   throw new Error('Oooooops!');
-// }, 2000);
-
-// throw Error('Oops');
-
-// Promise.reject(Error('Oops!'));
 
 module.exports = app;
