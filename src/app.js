@@ -11,6 +11,7 @@ const logger = require('./common/logger');
 const { errorHandler } = require('./common/errorHandler');
 const helmet = require('helmet');
 const cors = require('cors');
+const authenticateToken = require('./authentification/authentification');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -38,6 +39,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
+app.use(authenticateToken);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);

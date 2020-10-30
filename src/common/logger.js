@@ -1,6 +1,7 @@
 const winston = require('winston');
 require('winston-daily-rotate-file');
 const morgan = require('morgan');
+const { NODE_ENV } = require('./config');
 
 morgan.token('body', req =>
   JSON.stringify(
@@ -67,7 +68,7 @@ const logger = winston.createLogger({
   exitOnError: true
 });
 
-if (process.env.NODE_ENV === 'development') {
+if (NODE_ENV === 'development') {
   logger.add(new winston.transports.Console(options.console));
 }
 
