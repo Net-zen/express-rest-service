@@ -1,6 +1,5 @@
 const { NOT_FOUND } = require('../../common/errorHandler');
 const Board = require('./board.model');
-const Task = require('../tasks/task.model');
 
 const getAll = () => Board.find({});
 
@@ -27,7 +26,6 @@ const remove = async id => {
   if (!board) {
     throw new NOT_FOUND(`Board with id: ${id} was not found`);
   }
-  await Task.deleteMany({ boardId: id });
   return board;
 };
 

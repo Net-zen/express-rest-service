@@ -1,6 +1,5 @@
 const { NOT_FOUND } = require('../../common/errorHandler');
 const User = require('./user.model');
-const Task = require('../tasks/task.model');
 const bcrypt = require('bcrypt');
 
 const createAdmin = async () => {
@@ -36,8 +35,7 @@ const remove = async id => {
   if (!user) {
     throw new NOT_FOUND(`User with id: ${id} was not found`);
   }
-  await Task.updateMany({ userId: id }, { userId: null });
-  return true;
+  return user;
 };
 
 const getByLogin = async user => User.findOne({ login: user.login });
