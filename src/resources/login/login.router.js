@@ -12,7 +12,7 @@ router.route('/').post(async (req, res) => {
   const match = await bcrypt.compare(req.body.password, user.password);
   if (!match) throw new UNAUTHORIZED('Bad username/password combination');
   const payload = { userId: user.id, login: user.login };
-  const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: 1800000 });
+  const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: 180 });
   res.send({ token });
 });
 
