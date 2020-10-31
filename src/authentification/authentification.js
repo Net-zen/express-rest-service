@@ -13,11 +13,12 @@ const authenticateToken = async (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) throw new UNAUTHORIZED('Failed to authenticate token');
 
-  jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
-    if (err) throw new UNAUTHORIZED('Failed to authenticate token');
-    req.user = user;
-    next();
-  });
+  try {
+    jwt.verify(token, JWT_SECRET_KEY);
+  } catch (e) {
+    throw new UNAUTHORIZED('Failed to authenticate token');
+  }
+  next();
 };
 
 module.exports = authenticateToken;
