@@ -1,4 +1,4 @@
-const { NOT_FOUND } = require('../../common/errorHandler');
+const { NOT_FOUND } = require('../../errors/errors');
 const User = require('./user.model');
 const bcrypt = require('bcrypt');
 
