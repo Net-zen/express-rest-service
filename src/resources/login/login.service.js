@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { JWT_SECRET_KEY } = require('../../common/config');
-const { UNAUTHORIZED, FORBIDDEN } = require('../../errors/errors');
+const { FORBIDDEN } = require('../../errors/errors');
 const usersRepo = require('../users/user.db.repository');
 
 const signToken = async requestedUser => {
@@ -11,7 +11,7 @@ const signToken = async requestedUser => {
   }
   const match = await bcrypt.compare(requestedUser.password, user.password);
   if (!match) {
-    throw new UNAUTHORIZED('Bad username/password combination');
+    throw new FORBIDDEN('Bad username/password combination');
   }
   const payload = { userId: user.id, login: user.login };
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: 180 });

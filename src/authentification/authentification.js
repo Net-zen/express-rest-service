@@ -7,11 +7,13 @@ const authenticateToken = async (req, res, next) => {
   if (!authHeader) {
     throw new UNAUTHORIZED('Wrong authenticate scheme!');
   }
-  if (authHeader.split(' ')[0] !== 'Bearer') {
+  const [type, token] = authHeader.split(' ');
+  if (type !== 'Bearer') {
     throw new UNAUTHORIZED('Wrong authenticate scheme!');
   }
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) throw new UNAUTHORIZED('Failed to authenticate token');
+  if (!token) {
+    throw new UNAUTHORIZED('Failed to authenticate token');
+  }
 
   try {
     jwt.verify(token, JWT_SECRET_KEY);
