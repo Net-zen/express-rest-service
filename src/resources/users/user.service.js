@@ -14,6 +14,4 @@ const remove = async id => {
   return usersRepo.remove(id);
 };
 
-const getByLogin = user => usersRepo.getByLogin(user);
-
-module.exports = { getAll, getById, create, update, remove, getByLogin };
+module.exports = { getAll, getById, create, update, remove };
